@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 Route::resource('post', 'PostController');
 
+Route::get('/admin', 'Admin\DashboardController@index');
