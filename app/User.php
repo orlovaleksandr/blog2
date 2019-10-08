@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
+use Storage;
 
 class User extends Authenticatable
 {
@@ -15,7 +17,7 @@ class User extends Authenticatable
 
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email'
     ];
 
     protected $hidden = [
@@ -46,36 +48,55 @@ class User extends Authenticatable
         return $user;
     }
 
+    public function generatePassword($password)
+    {
+        if ($password != null){
+            $this->password = bcrypt($password);
+            $this->save();
+        }
+    }
+
     public function edit($fields)
     {
         $this->fill($fields);
-        $this->password = bcrypt($fields['password']);
+        if ($fields['password'] != null){
+            $this->password = bcrypt($fields['password']);
+        }
         $this->save();
     }
 
     public function remove()
     {
-        Storage::delete('uploads/' . $this->image);
+        $this->removeAvatar();
         $this->delete();
     }
 
     public function uploadAvatar($image)
     {
         if ($image == null){return; }
-        Storage::delete('uploads/' . $this->image);
+
+        $this->removeAvatar();
+
         $fileName = Str::random(10) . '.' . $image->extension();
-        $image->saveAs('uploads', $fileName);
-        $this->image = $fileName;
+        $image->storeAs('uploads', $fileName);
+        $this->avatar = $fileName;
         $this->save();
+    }
+
+    public function removeAvatar()
+    {
+        if ($this->avatar != null){
+            Storage::delete('uploads/' . $this->avatar);
+        }
     }
 
     public function getAvatar()
     {
-        if ($this->image == null){
+        if ($this->avatar == null){
             return '/img/no-user-image.png';
         }
 
-        return '/uploads/' . $this->image;
+        return '/uploads/' . $this->avatar;
     }
 
     public function makeAdmin()

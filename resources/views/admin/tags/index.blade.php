@@ -18,8 +18,12 @@
 
         <!-- Main content -->
         <section class="content">
-
-            <!-- Default box -->
+            @if(session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
+        <!-- Default box -->
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Листинг сущности</h3>
@@ -44,11 +48,11 @@
                                 <td>{{$tag->title}}</td>
                                 <td><a href="{{route('tags.edit', $tag->id)}}" class="fa fa-pencil"></a>
 
-                                {{Form::open(['route' => ['tags.destroy', $tag->id], 'method' => 'delete'])}}
+                                    {{Form::open(['route' => ['tags.destroy', $tag->id], 'method' => 'delete'])}}
                                     <button onclick="confirm('Вы уверены')" type="submit" class="delete">
                                         <i class="fa fa-remove"></i>
                                     </button>
-                                {{Form::close()}}
+                                    {{Form::close()}}
 
                                 </td>
                             </tr>

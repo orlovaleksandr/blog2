@@ -17,7 +17,11 @@
 
         <!-- Main content -->
         <section class="content">
-
+            @if(session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
             <!-- Default box -->
             <div class="box">
                 <div class="box-header">
