@@ -48,6 +48,11 @@ class Post extends Model
         );
     }
 
+    public function hasCategory()
+    {
+        return $this->category != null ? true : false;
+    }
+
     public function getCategoryId()
     {
         return $this->category != null ? $this->category->id : null;
