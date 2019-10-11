@@ -34,7 +34,7 @@
                             </div>
                             <div class="social-share">
                                 <span class="social-share-title pull-left text-capitalize">
-                                    By <a href="#">{{$post->author->name}}</a>123 {{$post->getDate()}}
+                                    By <a href="#">{{$post->author->name}}</a>123 321{{$post->getDate()}}
                                 </span>
 
                                 <ul class="text-center pull-right">
